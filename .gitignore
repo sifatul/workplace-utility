@@ -1,0 +1,7 @@
+.pr-favourites
+.DS_Store
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
