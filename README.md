@@ -5,6 +5,7 @@ A simple bash script to help you create GitHub pull requests with your favorite 
 ## Features
 
 - Create pull requests from current branch to multiple target branches
+- Automatic handling of unpushed branches (uses `--head` flag)
 - Save and manage favorite target branches per repository
 - Centralized favorites storage (shared across machines if synced)
 - Simple command-line interface
@@ -162,6 +163,9 @@ git remote -v
 
 ### "Error: GitHub CLI (gh) is not installed"
 Install GitHub CLI from: https://cli.github.com/
+
+### "you must first push the current branch to a remote"
+The script automatically handles this by using the `--head` flag for unpushed branches. You don't need to push first.
 
 ### Favorites not showing
 Check that you're in the correct repository:

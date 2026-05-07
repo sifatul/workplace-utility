@@ -248,6 +248,16 @@ create_pr() {
         return 0
     fi
 
+    local branch_exists_on_remote=$(git ls-remote --heads origin "$current_branch" 2>/dev/null | grep -q "$current_branch" && echo "yes" || echo "no")
+    local gh_command="gh pr create"
+
+    if [ "$branch_exists_on_remote" = "no" ]; then
+        echo ""
+        echo "Note: Branch '$current_branch' does not exist on remote."
+        echo "Will use --head flag to create PR from local branch."
+        gh_command="$gh_command --head $current_branch"
+    fi
+
     local success_count=0
     local fail_count=0
 
@@ -255,7 +265,7 @@ create_pr() {
         echo ""
         echo "Creating PR from '$current_branch' to '$target_branch'..."
 
-        local pr_link=$(gh pr create --base "$target_branch" --title "$pr_title" --body "$pr_body" 2>&1)
+        local pr_link=$($gh_command --base "$target_branch" --title "$pr_title" --body "$pr_body" 2>&1)
 
         if echo "$pr_link" | grep -q "https://"; then
             echo "✓ Pull request created successfully!"
@@ -264,6 +274,14 @@ create_pr() {
         else
             echo "✗ Failed to create PR:"
             echo "$pr_link"
+            if echo "$pr_link" | grep -q "No commits between"; then
+                echo ""
+                echo "Tip: The branches appear to be at the same commit."
+                echo "Create a new branch with changes first:"
+                echo "  git checkout -b feature/my-changes"
+                echo "  # Make changes and commit them"
+                echo "  pr-helper create"
+            fi
             ((fail_count++))
         fi
     done
