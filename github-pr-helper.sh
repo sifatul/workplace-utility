@@ -281,6 +281,13 @@ create_pr() {
                 echo "  git checkout -b feature/my-changes"
                 echo "  # Make changes and commit them"
                 echo "  pr-helper create"
+            elif echo "$pr_link" | grep -q "must be a collaborator"; then
+                echo ""
+                echo "You don't have permission to create PRs on this repository."
+                echo "Options:"
+                echo "  1. Be added as a collaborator to the repository"
+                echo "  2. Fork the repository and create PRs from your fork"
+                echo "  3. Test on a repository where you have write permissions"
             fi
             ((fail_count++))
         fi
