@@ -167,7 +167,7 @@ remove_favorite() {
     mv "$temp_file" "$FAVORITES_FILE"
     echo "Removed '$branch' from favorites."
 }
-
+# sdfd
 # Create pull request
 create_pr() {
     if ! git rev-parse --git-dir > /dev/null 2>&1; then
